@@ -12,9 +12,9 @@ public class UserDaoService {
 	private static int usersCount = 0;
 	
 	static {
-		users.add(new User(1, "Adam", LocalDate.now().minusYears(30)));
-		users.add(new User(2, "John", LocalDate.now().minusYears(17)));
-		users.add(new User(3, "Mike", LocalDate.now().minusYears(55)));
+		users.add(new User(++usersCount, "Adam", LocalDate.now().minusYears(30)));
+		users.add(new User(++usersCount, "John", LocalDate.now().minusYears(17)));
+		users.add(new User(++usersCount, "Mike", LocalDate.now().minusYears(55)));
 	}
 	
 	public List<User> findAll() {

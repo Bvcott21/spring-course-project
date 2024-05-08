@@ -1,12 +1,15 @@
 package com.bucott.restfulwebservices.user;
 
+import java.net.URI;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 public class UserResource {
@@ -28,7 +31,17 @@ public class UserResource {
 	}
 	
 	@PostMapping("/users") 
-	public void createUser(@RequestBody User user) {
-		service.save(user);
+	public ResponseEntity<User> createUser(@RequestBody User user) {
+		User savedUser = service.save(user);
+		
+		URI location = ServletUriComponentsBuilder	// Utility class that helps us get the current request URI
+				.fromCurrentRequest()				// method to get URI from current request
+				.path("/{id}")						// The part that we want to modify/add to the URI
+				.buildAndExpand(savedUser.getId())	// The actual value that's going into the above method's definition
+				.toUri();							// convert it into uri
+		
+		return ResponseEntity
+			.created(location)
+			.build();
 	}
 }
